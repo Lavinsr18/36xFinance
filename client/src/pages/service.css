@@ -1,0 +1,23 @@
+/* Fade animations */
+.fade-in { opacity: 1; transform: translateY(0); transition: opacity .3s ease, transform .3s ease; }
+.fade-out { opacity: 0; transform: translateY(8px); transition: opacity .2s ease, transform .2s ease; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.list-item-animate {
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+/* Flip card */
+.flip { perspective: 1200px; }
+.flip-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .7s cubic-bezier(0.4, 0.2, 0.2, 1); }
+.flip:hover .flip-inner, .flip:focus-within .flip-inner { transform: rotateY(180deg); }
+.flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 1rem; }
+.flip-back { transform: rotateY(180deg); }
+
+/* Hide focus outlines for mouse users only */
+.using-mouse *:focus { outline: none !important; box-shadow: none !important; }

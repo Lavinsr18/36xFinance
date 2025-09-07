@@ -1,0 +1,328 @@
+ <div className="min-h-screen bg-muted pt-16">
+      <div className="flex">
+        {/* Sidebar */}
+        <div className="w-64 bg-background border-r border-border min-h-screen">
+          <div className="p-6">
+            <h2 className="text-xl font-bold text-foreground">Admin Panel</h2>
+          </div>
+          <nav className="mt-6">
+            <button
+              onClick={() => setActiveSection("overview")}
+              className={`w-full flex items-center px-6 py-3 text-left transition-colors ${
+                activeSection === "overview"
+                  ? "text-primary bg-primary/10 border-r-2 border-primary"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              data-testid="nav-overview"
+            >
+              <span className="mr-3">📊</span>
+              <span>Dashboard Overview</span>
+            </button>
+            <button
+              onClick={() => setActiveSection("content")}
+              className={`w-full flex items-center px-6 py-3 text-left transition-colors ${
+                activeSection === "content"
+                  ? "text-primary bg-primary/10 border-r-2 border-primary"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              data-testid="nav-content"
+            >
+              <span className="mr-3">📝</span>
+              <span>Content Management</span>
+            </button>
+            <button
+              onClick={() => setActiveSection("inquiries")}
+              className={`w-full flex items-center px-6 py-3 text-left transition-colors ${
+                activeSection === "inquiries"
+                  ? "text-primary bg-primary/10 border-r-2 border-primary"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              data-testid="nav-inquiries"
+            >
+              <span className="mr-3">📧</span>
+              <span>Inquiries</span>
+            </button>
+            <button
+              onClick={() => setActiveSection("enquiry-forms")}
+              className={`w-full flex items-center px-6 py-3 text-left transition-colors ${
+                activeSection === "enquiry-forms"
+                  ? "text-primary bg-primary/10 border-r-2 border-primary"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              data-testid="nav-enquiry-forms"
+            >
+              <span className="mr-3">📤</span>
+              <span>Enquiry Forms</span>
+            </button>
+            <button
+              onClick={() => setActiveSection("user-management")}
+              className={`w-full flex items-center px-6 py-3 text-left transition-colors ${
+                activeSection === "user-management"
+                  ? "text-primary bg-primary/10 border-r-2 border-primary"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              data-testid="nav-user-management"
+            >
+              <span className="mr-3">👥</span>
+              <span>User Management</span>
+            </button>
+          </nav>
+        </div>
+
+        {/* Main Content */}
+        <div className="flex-1 p-8">
+          {/* Dashboard Overview */}
+          {activeSection === "overview" && (
+            <div className="fade-in">
+              <h1 className="text-3xl font-bold text-foreground mb-8" data-testid="text-dashboard-overview">
+                Dashboard Overview
+              </h1>
+              
+              {/* Stats Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                {stats.map((stat, index) => (
+                  <Card key={index} className="hover:shadow-lg transition-shadow">
+                    <CardContent className="p-6">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-muted-foreground text-sm" data-testid={`stat-label-${index}`}>
+                            {stat.label}
+                          </p>
+                          <p className="text-2xl font-bold text-foreground" data-testid={`stat-value-${index}`}>
+                            {stat.value}
+                          </p>
+                        </div>
+                        <div className="text-primary text-2xl">{stat.icon}</div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+
+              {/* Recent Activity */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Recent Activity</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {activitiesLoading ? (
+                    <p>Loading activities...</p>
+                  ) : activities.length === 0 ? (
+                    <p className="text-muted-foreground">No recent activity</p>
+                  ) : (
+                    <div className="space-y-4">
+                      {activities.map((activity: Activity) => (
+                        <div 
+                          key={activity.id} 
+                          className="flex items-center space-x-4 p-3 hover:bg-muted rounded-md transition-colors"
+                          data-testid={`activity-${activity.id}`}
+                        >
+                          <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                            <span className="text-primary">
+                              {activity.type === "blog" ? "📝" : 
+                               activity.type === "video" ? "🎥" : 
+                               activity.type === "contact" ? "📧" : "📋"}
+                            </span>
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-foreground font-medium">{activity.title}</p>
+                            <p className="text-muted-foreground text-sm">
+                              {activity.createdAt ? new Date(activity.createdAt).toLocaleString() : ""}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+          )}
+
+          {/* Content Management */}
+          {activeSection === "content" && (
+            <div className="fade-in">
+              <h1 className="text-3xl font-bold text-foreground mb-8" data-testid="text-content-management">
+                Content Management
+              </h1>
+              
+              <Tabs value={activeContentTab} onValueChange={setActiveContentTab}>
+                <TabsList className="mb-6">
+                  <TabsTrigger value="blogs" data-testid="tab-blogs">Blogs</TabsTrigger>
+                  <TabsTrigger value="videos" data-testid="tab-videos">Videos</TabsTrigger>
+                </TabsList>
+
+                {/* Blogs Tab */}
+                <TabsContent value="blogs">
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between">
+                      <CardTitle>Blog Posts</CardTitle>
+                      <Button 
+                        onClick={() => setIsAddingBlog(true)}
+                        className="btn-gradient"
+                        data-testid="button-add-blog"
+                      >
+                        Add New Blog
+                      </Button>
+                    </CardHeader>
+                    <CardContent>
+                      {blogsLoading ? (
+                        <p>Loading blogs...</p>
+                      ) : blogs.length === 0 ? (
+                        <p className="text-muted-foreground">No blogs found</p>
+                      ) : (
+                        <div className="overflow-x-auto">
+                          <table className="w-full">
+                            <thead className="bg-muted">
+                              <tr>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                                  Title
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                                  Category
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                                  Status
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                                  Date
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                                  Actions
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody className="bg-background divide-y divide-border">
+                              {blogs.map((blog: Blog) => (
+                                <tr key={blog.id} data-testid={`blog-row-${blog.id}`}>
+                                  <td className="px-6 py-4 whitespace-nowrap">
+                                    <div className="text-sm font-medium text-foreground">{blog.title}</div>
+                                  </td>
+                                  <td className="px-6 py-4 whitespace-nowrap">
+                                    <Badge variant="secondary">{blog.category}</Badge>
+                                  </td>
+                                  <td className="px-6 py-4 whitespace-nowrap">
+                                    <Badge 
+                                      variant={blog.status === "published" ? "default" : "secondary"}
+                                    >
+                                      {blog.status}
+                                    </Badge>
+                                  </td>
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
+                                    {blog.createdAt ? new Date(blog.createdAt).toLocaleDateString() : ""}
+                                  </td>
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm space-x-2">
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() => setEditingBlog(blog)}
+                                      data-testid={`button-edit-blog-${blog.id}`}
+                                    >
+                                      Edit
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() => deleteBlogMutation.mutate(blog.id)}
+                                      className="text-destructive hover:text-destructive"
+                                      data-testid={`button-delete-blog-${blog.id}`}
+                                    >
+                                      Delete
+                                    </Button>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                {/* Videos Tab */}
+                <TabsContent value="videos">
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between">
+                      <CardTitle>Videos</CardTitle>
+                      <Button 
+                        onClick={() => setIsAddingVideo(true)}
+                        className="btn-gradient"
+                        data-testid="button-add-video"
+                      >
+                        Add New Video
+                      </Button>
+                    </CardHeader>
+                    <CardContent>
+                      {videosLoading ? (
+                        <p>Loading videos...</p>
+                      ) : videos.length === 0 ? (
+                        <p className="text-muted-foreground">No videos found</p>
+                      ) : (
+                        <div className="overflow-x-auto">
+                          <table className="w-full">
+                            <thead className="bg-muted">
+                              <tr>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                                  Title
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                                  Duration
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                                  Views
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                                  Date
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                                  Actions
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody className="bg-background divide-y divide-border">
+                              {videos.map((video: Video) => (
+                                <tr key={video.id} data-testid={`video-row-${video.id}`}>
+                                  <td className="px-6 py-4 whitespace-nowrap">
+                                    <div className="text-sm font-medium text-foreground">{video.title}</div>
+                                  </td>
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
+                                    {video.duration || "N/A"}
+                                  </td>
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
+                                    {video.views || "0"}
+                                  </td>
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
+                                    {video.createdAt ? new Date(video.createdAt).toLocaleDateString() : ""}
+                                  </td>
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm space-x-2">
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() => setEditingVideo(video)}
+                                      data-testid={`button-edit-video-${video.id}`}
+                                    >
+                                      Edit
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() => deleteVideoMutation.mutate(video.id)}
+                                      className="text-destructive hover:text-destructive"
+                                      data-testid={`button-delete-video-${video.id}`}
+                                    >
+                                      Delete
+                                    </Button>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </Tabs>
+            </div>
+          )}

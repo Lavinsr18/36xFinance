@@ -1,0 +1,82 @@
+
+{/* Enquiry Forms Management */}
+{activeSection === "enquiry-forms" && (
+  <div className="fade-in">
+    <h1
+      className="text-3xl font-bold mb-8 bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent"
+      data-testid="text-enquiry-forms"
+    >
+      Enquiry Forms Management
+    </h1>
+
+    <Card className="hover:shadow-xl transition-all duration-300">
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle className="text-blue-600">Enquiry Forms</CardTitle>
+        <Button
+          onClick={() => setIsAddingEnquiry(true)}
+          className="bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:opacity-90 transition"
+          data-testid="button-add-enquiry-form"
+        >
+          Add New Form
+        </Button>
+      </CardHeader>
+      <CardContent>
+        {enquiryFormsLoading ? (
+          <p>Loading enquiry forms...</p>
+        ) : enquiryForms.length === 0 ? (
+          <p className="text-muted-foreground">No enquiry forms found</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {enquiryForms.map((form: EnquiryFormType) => (
+              <Card
+                key={form.id}
+                className="hover:shadow-xl hover:scale-[1.02] transition-all duration-300 border border-blue-200"
+              >
+                <CardContent className="p-6">
+                  <div className="text-center mb-4">
+                    <div className="text-4xl mb-2">{form.icon}</div>
+                    <h3 className="text-lg font-semibold text-purple-700 mb-2">{form.title}</h3>
+                    <p className="text-sm text-muted-foreground">{form.description}</p>
+                  </div>
+
+                  <div className="space-y-2 mb-4">
+                    {form.features?.map((feature, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center text-sm text-muted-foreground"
+                      >
+                        <span className="text-blue-600 mr-2">✓</span>
+                        <span>{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="flex space-x-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setEditingEnquiry(form)}
+                      className="flex-1 border-blue-400 text-blue-600 hover:bg-blue-50"
+                      data-testid={`button-edit-enquiry-${form.id}`}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => deleteEnquiryMutation.mutate(form.id)}
+                      className="flex-1 border-red-400 text-red-600 hover:bg-red-50"
+                      data-testid={`button-delete-enquiry-${form.id}`}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  </div>
+)}

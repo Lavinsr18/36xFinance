@@ -11,6 +11,55 @@ body, html {
   height: 100%;
 }
 
+.flip-card {
+  perspective: 1000px;
+  height: 320px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-back{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 1rem;
+  box-shadow: #007bff;
+}
+
+.hello{
+  border: 2px 0px 2px 0px;
+  border-style: dashed;
+  border-color: #ffffff;
+}
+
+.flip-card-front {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 1rem;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+
+
 .admin-login-container {
   background: url('../pages/img.jpg') no-repeat center center/cover;
   height: 100vh;
@@ -141,4 +190,27 @@ body, html {
 .input-field,
 .login-button {
   cursor: url('https://cdn.custom-cursor.com/db/7037/32/blue-pointer.png'), auto;
+}
+
+
+/* Gradient Button */
+.btn-gradient {
+  @apply bg-gradient-to-r from-[hsl(250,84%,54%)] to-[hsl(217,91%,60%)]
+         text-white px-6 py-3 rounded-xl font-semibold 
+         shadow-md transition-all duration-300 ease-in-out;
+}
+
+.btn-gradient:hover {
+  @apply shadow-[0_0_20px_rgba(138,43,226,0.5)] scale-105;
+}
+
+/* Glassmorphism enhancement */
+.glass-morphism {
+  @apply bg-white/5 backdrop-blur-lg border border-white/10;
+}
+
+.glass-morphism:hover {
+  @apply border-white/20 shadow-xl;
+  transform: translateY(-4px) scale(1.02);
+  transition: all 0.3s ease-in-out;
 }
