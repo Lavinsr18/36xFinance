@@ -222,7 +222,6 @@ export default function AdminDashboard() {
                 ))}
               </div>
 
-              {/* Recent Activity */}
              {/* Recent Activity */}
 <Card className="border border-indigo-200 bg-gradient-to-br from-white to-indigo-50 shadow-sm">
   <CardHeader className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-md">
@@ -542,7 +541,7 @@ export default function AdminDashboard() {
                 <CardHeader className="flex flex-row items-center justify-between">
                   <CardTitle className="text-blue-600">Enquiry Forms</CardTitle>
                   <Button 
-                    onClick={() => etIsAddingEnquiry(true)}
+                    onClick={() => setIsAddingEnquiry(true)}
                     className="bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:opacity-90 transition"
                     data-testid="button-add-enquiry-form"
                   >
