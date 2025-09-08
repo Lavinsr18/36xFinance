@@ -4,13 +4,13 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development tsx server/index.ts",
-    "vite-build": "npx vite build",
-    "server-build": "esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist-server",
-    "build": "npm run vite-build && npm run server-build",
-    "start": "NODE_ENV=production node dist-server/index.js",
-    "check": "tsc",
-    "db:push": "drizzle-kit push"
+   "dev": "cross-env NODE_ENV=development tsx server/index.ts",
+  "vite-build": "npx vite build",
+  "server-build": "esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist-server",
+  "build": "npm run vite-build && npm run server-build",
+  "start": "cross-env NODE_ENV=production node dist-server/index.js",
+  "check": "tsc",
+  "db:push": "drizzle-kit push"
   },
   "engines": {
     "node": "18.x"
